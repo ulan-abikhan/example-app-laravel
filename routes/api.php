@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\OwnerController;
 use App\Http\Controllers\PhotoController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
@@ -98,3 +99,5 @@ Route::delete('/user/{id}', [UserController::class, 'destroy']);
 
 Route::resource('photos', PhotoController::class);
 Route::apiResource('products', ProductController::class);
+
+Route::get('owner', [OwnerController::class, 'index']);
