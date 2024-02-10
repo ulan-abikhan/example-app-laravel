@@ -101,3 +101,6 @@ Route::resource('photos', PhotoController::class);
 Route::apiResource('products', ProductController::class);
 
 Route::get('owner', [OwnerController::class, 'index']);
+Route::post('owner', [OwnerController::class, 'store']);
+
+Route::get('owner/count', [OwnerController::class, 'minMax']);

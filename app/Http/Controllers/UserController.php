@@ -30,6 +30,23 @@ class UserController extends Controller
 
     public function destroy($id) {
         return response()->json(["user_id"=>"Deleting $id"]);
+        // if (isset($request->start_age)) {
+        //     $results = $results->where('AGE', '>=', $request->start_age);
+        // }
+        
+        // if (isset($request->end_age)) {
+        //     $results = $results->where('AGE', '<=', $request->end_age);
+        // }
+
+        // if (isset($request->search)) {
+        //     $search = $request->search;
+        //     $results = $results->where(function($query) use ($search) {
+        //         $query->where('name', 'LIKE', "$search%")
+        //             ->orWhere('surname', 'LIKE', "$search%");
+        //     });
+        // }
+
+        // $results = $results->get();
     } 
 
 
