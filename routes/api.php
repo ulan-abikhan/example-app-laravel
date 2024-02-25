@@ -3,6 +3,7 @@
 use App\Http\Controllers\OwnerController;
 use App\Http\Controllers\PhotoController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\SchoolContoller;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\Check;
 use App\Http\Middleware\Uncheck;
@@ -102,5 +103,15 @@ Route::apiResource('products', ProductController::class);
 
 Route::get('owner', [OwnerController::class, 'index']);
 Route::post('owner', [OwnerController::class, 'store']);
+Route::patch('owner/{id}', [OwnerController::class, 'update']);
+Route::delete('owner/{id}', [OwnerController::class, 'destroy']);
 
 Route::get('owner/count', [OwnerController::class, 'minMax']);
+
+Route::apiResource('schools', SchoolContoller::class);
+
+// Route::get('schools/{id}/is-dirty', [SchoolContoller::class, 'isDirty']);
+
+Route::delete('schools-delete-many', [SchoolContoller::class, 'destroyMany']);
+
+Route::get('schools-with-number', [SchoolContoller::class, 'conditionalIndex']);

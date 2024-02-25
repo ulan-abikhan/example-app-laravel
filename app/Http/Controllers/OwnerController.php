@@ -2,22 +2,26 @@
 
 namespace App\Http\Controllers;
 
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
-use function Laravel\Prompts\table;
 
 class OwnerController extends Controller
 {
     
     public function index(Request $request) {
-        
-        $results = DB::table('owners')->whereNot('AGE', '<=', 34)->get();
+        $per_page = $request->per_page ?? 20;
+        $results = DB::table('owners')
+        ->where('AGE', '>=', 35)
+        ->orderBy('AGE')
+        ->paginate(
+            perPage: $per_page,
+            columns: ['id', 'AGE','name', 'surname']
+        );
 
-        $owners = DB::table('owners')->where('AGE', '>', 34)->get();
-
-        return $results;
+        return response()->json(['owners'=>$results]);
     }
 
     public function minMax() {
@@ -27,9 +31,39 @@ class OwnerController extends Controller
     }
 
     public function store(Request $request) {
-        DB::insert("INSERT INTO owners (id, name, surname, AGE, address, created_at) 
-        VALUES (?, ?, ?, ?, ?, ?)", 
-        [null, $request->name, $request->surname, $request->age, $request->address, null]);
+        try {
+            DB::table('owners')->upsert(
+                [
+                    "id"=>133,
+                    "name"=>$request->name, 
+                    "surname"=>$request->surname,
+                    "AGE"=>$request->AGE,
+                    "address"=>$request->address 
+                ],
+                "id",
+                ["surname", "name", "AGE", "address"]
+            );
+
+            return response(status: 201);
+        }
+        catch (Exception $e) {
+            return response()->json(["message"=>$e->getMessage()], 400);
+        }
+
     }
-    
+
+    public function update($id, Request $request) {
+        $result = DB::table('owners')
+            ->where('id', $id)
+            ->update($request->all());
+
+        return response()->json(["affected"=>$result], status: 200);
+    }
+
+    public function destroy($id) {
+        $result = DB::table('owners')
+            ->where('id', $id)
+            ->delete();
+    }
+
 }
